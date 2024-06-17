@@ -95,6 +95,7 @@ func(h *Handler) handleRegister(w http.ResponseWriter, r *http.Request){
 		// And if an error occurs, a new response is created with w and is given
 		// a status code of 400 (bad request) and message that is in err
 		utils.WriteError(w, http.StatusBadRequest, err)
+		return
 	}
 
 	// validate the payload

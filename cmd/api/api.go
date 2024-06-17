@@ -1,10 +1,12 @@
 package api
 
 import (
+	"Ecom/cmd/services/product"
 	"Ecom/cmd/services/user"
 	"database/sql"
 	"log"
 	"net/http"
+
 	"github.com/gorilla/mux"
 )
 
@@ -34,6 +36,7 @@ func (s *APIServer) Run() error{
 	router := mux.NewRouter()
 	subrouter := router.PathPrefix("/api/v1").Subrouter()
 
+	//***************************  USER ****************************************
 	// Here we initialize the repository which will be used to communicate 
 	// the database
 	userStore := user.NewStore(s.db)
@@ -44,6 +47,11 @@ func (s *APIServer) Run() error{
 	// call the register method on the controller to register all the routes passing
 	// through the subroute
 	userHandler.RegisterRoutes(subrouter)
+
+	//***************************  PRODUCTS ****************************************
+	productStore := product.NewStore(s.db)
+	productHandler := product.NewHandler(productStore)
+	productHandler.RegisterRoutes(subrouter)
 
 	log.Println("server listening on port: ", s.addr)
 
