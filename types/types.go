@@ -2,7 +2,7 @@ package types
 
 import "time"
 
-// Here interface is used so that we can just test by creating 
+// Here interface is used so that we can just test by creating
 // mock interface.
 type UserStore interface {
 	GetUserByEmail(email string)(*User, error)
@@ -21,8 +21,13 @@ type User struct {
 }
 
 type RegisterUserPayload struct {
-	Firstname string `json:"firstName"`
-	Lastname  string `json:"lastName"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
+	Firstname string `json:"firstName" validate:"required"`
+	Lastname  string `json:"lastName" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Password  string `json:"password" validate:"required,min=4,max=10"`
+}
+
+type LoginUserPayload struct {
+	Email     string `json:"email" validate:"required,email"`
+	Password  string `json:"password" validate:"required"`
 }
